@@ -1,0 +1,28 @@
+{
+  "name": "AMA Rescue New Pet Helper",
+  "description": "Autofill for adding new pets",
+  "version": "0.1",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "activeTab", "sidePanel"],
+  "action": {
+    "default_popup": "/index.html",
+    "default_icon": {}
+  },
+  "side_panel": {
+    "default_path": "./index.html"
+  },
+  "icons": {},
+  "content_scripts": [
+    {
+      "matches": ["https://app.sparkie.io/"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}

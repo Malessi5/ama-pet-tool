@@ -1,0 +1,43 @@
+const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WebpackExtensionManifestPlugin = require("webpack-extension-manifest-plugin");
+const baseManifest = require("./src/manifest.json");
+
+module.exports = {
+  entry: {
+    main: { import: "./src/main.tsx", filename: "main.js" },
+    background: { import: "./src/background.ts", filename: "background.js" },
+    content: { import: "./src/content.ts", filename: "content.js" },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
+  mode: "production",
+
+  devtool: "cheap-module-source-map",
+  output: {
+    filename: "main.js",
+    path: path.resolve(__dirname, "build"),
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "JS help",
+      template: "src/index.html",
+    }),
+    new WebpackExtensionManifestPlugin({
+      config: {
+        base: baseManifest,
+      },
+    }),
+  ],
+};
