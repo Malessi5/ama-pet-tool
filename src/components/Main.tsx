@@ -3,12 +3,14 @@ import messages from "../util/messages";
 
 export default () => {
   const savePet = () => {
-    messages.sendToActiveTab({ type: "SAVE_PET" });
+    messages.sendToActiveTab({ type: "CONTENT_SAVE_PET" });
   };
 
   return (
     <div className="container">
-      <button onClick={savePet}>Save Pet</button>
+      <button type="button" className="btn btn-primary" onClick={savePet}>
+        Save Pet
+      </button>
     </div>
   );
 };

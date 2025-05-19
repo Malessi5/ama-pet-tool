@@ -6,7 +6,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["storage", "activeTab", "sidePanel"],
+  "permissions": ["storage", "activeTab", "sidePanel", "scripting"],
   "action": {
     "default_popup": "/index.html",
     "default_icon": {}
@@ -17,12 +17,15 @@
   "icons": {},
   "content_scripts": [
     {
-      "matches": ["https://*/*"],
+      "matches": ["https://app.sparkie.io/app/*"],
       "js": ["content.js"],
-      "run_at": "document_end"
+      "run_at": "document_start"
     }
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
-  }
+  },
+  "web_accessible_resources": [
+    { "resources": ["scripts/data_intercept.js"], "matches": ["https://*/*"] }
+  ]
 }

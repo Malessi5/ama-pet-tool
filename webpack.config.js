@@ -9,6 +9,10 @@ module.exports = {
     main: { import: "./src/index.tsx", filename: "index.js" },
     background: { import: "./src/background.ts", filename: "background.js" },
     content: { import: "./src/content.ts", filename: "content.js" },
+    scripts: {
+      import: "./src/scripts/data_intercept.ts",
+      filename: "scripts/data_intercept.js",
+    },
   },
   module: {
     rules: [

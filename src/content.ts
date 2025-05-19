@@ -1,13 +1,26 @@
+import content_utils from "./util/content_utils";
+
 const ContentScript = {
   sparkie: {
     init: function () {
       console.log("sparkie init");
+      //inject script to intercept pet data from API calls
+      content_utils.injectScript("scripts/data_intercept.js");
+
+      // custom event listener to listen for data from inject script
+      document.addEventListener("DISPATCH_DATA", (e) => {
+        const customEvent = e as CustomEvent<any>;
+        console.log(customEvent.detail);
+        ContentScript.sparkie.utils.savePetData(customEvent.detail);
+      });
+
       // message listener to listen for new pet info
       chrome.runtime.onMessage.addListener(
         async (message, sender, sendResponse) => {
-          if (message.type == "SAVE_PET") {
+          if (message.type == "CONTENT_SAVE_PET") {
             const petData = this.scrapePetData();
             console.log(petData);
+            ContentScript.sparkie.utils.savePetData(petData);
           }
         }
       );
@@ -21,7 +34,7 @@ const ContentScript = {
       },
       extractTextPairs: function (container: Element) {
         // TODO: PET/RESULT type
-        const result: any = {};
+        const result = {} as PetData;
         const rows = container.querySelectorAll(".arp-details-row");
 
         rows.forEach((row) => {
@@ -37,7 +50,9 @@ const ContentScript = {
               labelEl.textContent &&
               valueEl.textContent
             ) {
-              const key = this.toCamelCase(labelEl.textContent.trim());
+              const key = this.toCamelCase(
+                labelEl.textContent.trim()
+              ) as keyof PetData;
               const value = valueEl.textContent.trim().replace(/\s+/g, " ");
               result[key] = value;
             }
@@ -84,12 +99,18 @@ const ContentScript = {
 
         return result;
       },
+      savePetData: async function (petData: PetData) {
+        await chrome.runtime.sendMessage({
+          type: "SW_STORE_PET_DATA",
+          petData,
+        });
+      },
     },
     scrapePetData: function () {
       const basicInfoContainer = document.querySelector("#basic-info-content");
       const basicInfo = basicInfoContainer
         ? this.utils.extractTextPairs(basicInfoContainer)
-        : {};
+        : ({} as PetData);
 
       basicInfo["sparkieURL"] = window.location.href;
       const summaryInfo = this.utils.extractSummaryInfo();
