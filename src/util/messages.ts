@@ -7,7 +7,7 @@ export default {
 
     let tabId = activeTab[0].id!;
     await chrome.tabs.sendMessage(tabId, {
-      data,
+      ...data,
     });
   },
 };

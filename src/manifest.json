@@ -17,7 +17,7 @@
   "icons": {},
   "content_scripts": [
     {
-      "matches": ["https://app.sparkie.io/"],
+      "matches": ["https://*/*"],
       "js": ["content.js"],
       "run_at": "document_end"
     }

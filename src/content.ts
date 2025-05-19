@@ -1,11 +1,11 @@
 const ContentScript = {
   sparkie: {
     init: function () {
+      console.log("sparkie init");
       // message listener to listen for new pet info
       chrome.runtime.onMessage.addListener(
         async (message, sender, sendResponse) => {
           if (message.type == "SAVE_PET") {
-            console.log("message", message);
             const petData = this.scrapePetData();
             console.log(petData);
           }
@@ -82,20 +82,6 @@ const ContentScript = {
           }
         });
 
-        const medStatusEl = container.querySelector(
-          '[click.trigger*="scrollToAnchor"] p'
-        );
-        if (medStatusEl) {
-          // TODO: medical status type
-          const medicalStatus: any = [];
-          medStatusEl.querySelectorAll("span").forEach((span) => {
-            const spanText = span.textContent || "";
-            const text = spanText.trim();
-            if (text) medicalStatus.push(text.replace(/\s+/g, " "));
-          });
-          result.medicalStatus = medicalStatus;
-        }
-
         return result;
       },
     },
@@ -115,3 +101,4 @@ const ContentScript = {
     },
   },
 };
+ContentScript.sparkie.init();
