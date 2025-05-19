@@ -6,7 +6,7 @@ const baseManifest = require("./src/manifest.json");
 
 module.exports = {
   entry: {
-    main: { import: "./src/main.tsx", filename: "main.js" },
+    main: { import: "./src/index.tsx", filename: "index.js" },
     background: { import: "./src/background.ts", filename: "background.js" },
     content: { import: "./src/content.ts", filename: "content.js" },
   },
@@ -31,7 +31,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "JS help",
+      title: "AMA Helper",
       template: "src/index.html",
     }),
     new WebpackExtensionManifestPlugin({

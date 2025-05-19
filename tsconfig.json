@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 16",
+  "compilerOptions": {
+    "lib": ["DOM", "ES6", "ES2021.String", "DOM.ITERABLE"],
+    "module": "ES2022",
+    "noImplicitAny": true,
+    "target": "ES6",
+    "jsx": "react",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "typeRoots": ["./node_modules/@types"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "types": ["chrome", "node"]
+  }
+}
