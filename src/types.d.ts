@@ -1,9 +1,13 @@
 interface PetData {
   animalId: string;
   availability: string;
+  breed: string;
+  breed2: string;
   coat: string;
+  color: string;
   dateOfBirth: string;
   expense: string;
+  gender: string;
   health: string;
   id: string;
   imageUrl: string;
@@ -17,9 +21,17 @@ interface PetData {
   microchipCompany: string;
   microchipNumber: string;
   name: string;
-  primaryBreed: string;
-  primaryColor: string;
-  sizeAsAdult: string;
+  photos: [
+    {
+      description: string;
+      filename: string;
+      mediumThumbnailUrl: string;
+      smallThumbnailUrl: string;
+      title: string;
+      url: string;
+    }
+  ];
+  size: string;
   sparkieURL: string;
   species: string;
   status: string;

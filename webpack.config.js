@@ -13,6 +13,10 @@ module.exports = {
       import: "./src/scripts/data_intercept.ts",
       filename: "scripts/data_intercept.js",
     },
+    bootstrap: {
+      import: "./src/bootstrap/bootstrap.bundle.min.js",
+      filename: "./bootstrap/bootstrap.bundle.min.js",
+    },
   },
   module: {
     rules: [

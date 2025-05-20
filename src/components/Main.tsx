@@ -1,5 +1,6 @@
 import React from "react";
 import messages from "../util/messages";
+import Pets from "./Pets";
 
 export default () => {
   const savePet = () => {
@@ -8,9 +9,10 @@ export default () => {
 
   return (
     <div className="container">
-      <button type="button" className="btn btn-primary" onClick={savePet}>
+      {/* <button type="button" className="btn btn-primary" onClick={savePet}>
         Save Pet
-      </button>
+      </button> */}
+      <Pets />
     </div>
   );
 };

@@ -26,6 +26,9 @@
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "web_accessible_resources": [
-    { "resources": ["scripts/data_intercept.js"], "matches": ["https://*/*"] }
+    {
+      "resources": ["scripts/data_intercept.js"],
+      "matches": ["https://*/*"]
+    }
   ]
 }
