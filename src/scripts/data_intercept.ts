@@ -31,12 +31,14 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
 
       this.addEventListener("load", () => {
         try {
-          const rawBody = requestBodyMap.get(this);
-          const parsedBody = rawBody ? JSON.parse(rawBody) : null;
+          // const rawBody = requestBodyMap.get(this);
+          // const parsedBody = rawBody ? JSON.parse(rawBody) : null;
           // console.log("%c[GraphQL XHR Request]", "color: orange;", parsedBody);
 
           const jsonResponse = JSON.parse(this.responseText);
           const { data } = jsonResponse;
+          const url = window.location.href;
+          data.sparkieURL = url;
 
           if (data["animalById"]) {
             console.log("%c[GraphQL XHR Response]", "color: green;", data);
