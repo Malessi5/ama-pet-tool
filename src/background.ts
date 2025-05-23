@@ -21,6 +21,10 @@ const PetStorage = {
     try {
       const allPets = await this.getAllPets();
       console.log(petData, allPets);
+
+      if (petData.intake.date) {
+        petData.intakeDate = new Date(petData.intake.date).toLocaleDateString();
+      }
       allPets[petData.animalId] = petData;
       await chrome.storage.local.set({ pets: allPets });
     } catch (error) {
@@ -33,6 +37,11 @@ const PetStorage = {
 
       for (let pet of petData) {
         let id = pet.animalId;
+
+        if (pet.intake.date) {
+          pet.intakeDate = new Date(pet.intake.date).toLocaleDateString();
+        }
+
         // if we don't have the pet data, we add it
         if (!allPets[id]) {
           allPets[id] = pet;

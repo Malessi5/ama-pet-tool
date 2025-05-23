@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SinglePet from "./SinglePet";
+import SinglePet from "./SinglePet/SinglePet";
 import PetOptions from "./PetOptions";
 
 type PetMap = Record<string, PetData>;
@@ -18,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     setSelectedPet(allPets[selectedPetId]);
-  }, [selectedPetId]);
+  }, [selectedPetId, allPets]);
 
   const getAllPetData = async () => {
     try {
@@ -38,6 +38,7 @@ export default () => {
   const addStorageListener = async (callback: Function, key: string) => {
     await chrome.storage.onChanged.addListener((changes) => {
       if (changes.hasOwnProperty(key)) {
+        console.log("storage change", changes[key].newValue);
         callback(changes[key].newValue);
       }
     });

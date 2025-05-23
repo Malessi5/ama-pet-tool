@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import BasicInfo from "./BasicInfo";
 
 const visibleAttributes = new Set([
   "animalId",
@@ -22,7 +23,7 @@ export default (props: { pet: PetData }) => {
 
   const getImageUrl = () => {
     if (pet.photos && pet.photos.length > 0) {
-      return imgUrlPrefix + pet.photos[0].smallThumbnailUrl;
+      return imgUrlPrefix + pet.photos[0].mediumThumbnailUrl;
     }
   };
 
@@ -49,21 +50,30 @@ export default (props: { pet: PetData }) => {
   };
 
   return (
-    <div>
-      <div>
-        <img src={getImageUrl()} />
-        <p>{pet.name}</p>
-        <ul className="list-group">
-          {Object.keys(petData).map((key) => (
-            <li className="list-group-item">
-              {key} : {petData[key as keyof typeof petData]}
-            </li>
-          ))}
-        </ul>
+    <div className="container">
+      <div className="mt-5">
+        <div
+          className="d-flex align-items-center flex-column mb-3"
+          id="pet-header"
+        >
+          <img className="rounded" src={getImageUrl()} />
+          {pet.adoptedName ? (
+            <h3 className="mb-0">
+              {pet.name} nka {pet.adoptedName}
+            </h3>
+          ) : (
+            <h3 className="mb-0">{pet.name}</h3>
+          )}
+          <button
+            style={{ fontSize: ".8em" }}
+            className="btn btn-link"
+            onClick={openInSparkie}
+          >
+            View in Sparkie
+          </button>
+        </div>
+        <BasicInfo pet={pet} />
       </div>
-      <button type="button" onClick={openInSparkie}>
-        View in Sparkie
-      </button>
     </div>
   );
 };

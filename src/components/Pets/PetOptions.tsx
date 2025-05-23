@@ -20,7 +20,7 @@ export default (props: {
   return (
     <div className="container">
       <select
-        className="form-select"
+        className="form-select mt-2"
         aria-label="Pet Selector"
         id="pet-selector"
         value={selectedPetId}
@@ -29,9 +29,16 @@ export default (props: {
         <option selected value="">
           Please Select an Animal
         </option>
-        {Object.keys(allPets).map((petId) => (
-          <option value={petId}>{allPets[petId].name}</option>
-        ))}
+        {Object.keys(allPets).map((petId) =>
+          allPets[petId].adoptedName &&
+          allPets[petId].adoptedName != allPets[petId].name ? (
+            <option value={petId}>
+              {allPets[petId].name} nka {allPets[petId].adoptedName}
+            </option>
+          ) : (
+            <option value={petId}>{allPets[petId].name}</option>
+          )
+        )}
       </select>
     </div>
   );

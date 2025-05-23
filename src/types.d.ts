@@ -1,13 +1,20 @@
 interface PetData {
+  adoptedName: string;
   animalId: string;
   availability: string;
   breed: string;
   breed2: string;
   coat: string;
   color: string;
+  color2: string;
+  currentGuardian: {
+    availability: string;
+    status: string;
+  };
   dateOfBirth: string;
   expense: string;
   gender: string;
+  guardians: [{ availability: string; status: string }];
   health: string;
   id: string;
   imageUrl: string;
@@ -18,6 +25,7 @@ interface PetData {
     mode: string;
     person: string;
   };
+  intakeDate: string;
   labels: string;
   lastUpdated: string;
   medicalStatus: string;

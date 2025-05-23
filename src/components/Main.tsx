@@ -3,9 +3,9 @@ import messages from "../util/messages";
 import Pets from "./Pets/PetsMain";
 
 export default () => {
-  const savePet = () => {
-    messages.sendToActiveTab({ type: "CONTENT_SAVE_PET" });
-  };
+  // const savePet = () => {
+  //   messages.sendToActiveTab({ type: "CONTENT_SAVE_PET" });
+  // };
 
   return (
     <div className="container">
