@@ -6,7 +6,10 @@ chrome.sidePanel
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   switch (message.type) {
     case "SW_STORE_PET_DATA":
-      PetStorage.add(message.petData);
+      PetStorage.addSinglePet(message.petData);
+      break;
+    case "SW_STORE_PETS_DATA":
+      PetStorage.addMultiplePets(message.petData);
       break;
     default:
       break;
@@ -14,11 +17,34 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 });
 
 const PetStorage = {
-  add: async function (petData: PetData) {
+  addSinglePet: async function (petData: PetData) {
     try {
       const allPets = await this.getAllPets();
       console.log(petData, allPets);
       allPets[petData.animalId] = petData;
+      await chrome.storage.local.set({ pets: allPets });
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  addMultiplePets: async function (petData: PetData[]) {
+    try {
+      const allPets = await this.getAllPets();
+
+      for (let pet of petData) {
+        let id = pet.animalId;
+        // if we don't have the pet data, we add it
+        if (!allPets[id]) {
+          allPets[id] = pet;
+        } else {
+          // if we do have the pet data, we only update the incoming attributes, not the whole object
+          for (let attr in pet) {
+            allPets[id][attr] = pet[attr as keyof typeof pet];
+          }
+        }
+      }
+      console.log(petData, allPets);
+
       await chrome.storage.local.set({ pets: allPets });
     } catch (error) {
       console.error(error);

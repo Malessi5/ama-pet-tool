@@ -8,10 +8,16 @@ const ContentScript = {
       content_utils.injectScript("scripts/data_intercept.js");
 
       // custom event listener to listen for data from inject script
-      document.addEventListener("DISPATCH_DATA", (e) => {
+      document.addEventListener("DISPATCH_SINGLE_PET_DATA", (e) => {
         const customEvent = e as CustomEvent<any>;
         console.log(customEvent.detail);
-        ContentScript.sparkie.utils.savePetData(customEvent.detail);
+        ContentScript.sparkie.utils.savePetData(customEvent.detail, true);
+      });
+
+      document.addEventListener("DISPATCH_MULTI_PET_DATA", (e) => {
+        const customEvent = e as CustomEvent<any>;
+        console.log(customEvent.detail);
+        ContentScript.sparkie.utils.savePetData(customEvent.detail, false);
       });
 
       // message listener to listen for new pet info
@@ -99,11 +105,18 @@ const ContentScript = {
 
       //     return result;
       //   },
-      savePetData: async function (petData: PetData) {
-        await chrome.runtime.sendMessage({
-          type: "SW_STORE_PET_DATA",
-          petData,
-        });
+      savePetData: async function (petData: PetData, singlePet: Boolean) {
+        if (singlePet) {
+          await chrome.runtime.sendMessage({
+            type: "SW_STORE_PET_DATA",
+            petData,
+          });
+        } else {
+          await chrome.runtime.sendMessage({
+            type: "SW_STORE_PETS_DATA",
+            petData,
+          });
+        }
       },
     },
     // scrapePetData: function () {

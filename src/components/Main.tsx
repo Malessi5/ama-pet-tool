@@ -1,6 +1,6 @@
 import React from "react";
 import messages from "../util/messages";
-import Pets from "./Pets";
+import Pets from "./Pets/PetsMain";
 
 export default () => {
   const savePet = () => {

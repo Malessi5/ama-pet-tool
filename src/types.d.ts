@@ -12,9 +12,12 @@ interface PetData {
   id: string;
   imageUrl: string;
   income: string;
-  intakeDate: string;
-  intakeMode: string;
-  intakeName: string;
+  intake: {
+    agency: string;
+    date: string;
+    mode: string;
+    person: string;
+  };
   labels: string;
   lastUpdated: string;
   medicalStatus: string;
@@ -40,4 +43,8 @@ interface PetData {
   transferAgency: string;
   uploadRegistry: string;
   uploadStatus: string;
+  _id: string;
+}
+interface AllPetData {
+  [index: string]: PetData;
 }

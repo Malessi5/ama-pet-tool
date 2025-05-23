@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
 import SinglePet from "./SinglePet";
+import PetOptions from "./PetOptions";
 
 type PetMap = Record<string, PetData>;
 
 export default () => {
   const [allPets, setAllPets] = useState<PetMap>({});
+  const [selectedPetId, setSelectedPetId] = useState<string>("");
+  const [selectedPet, setSelectedPet] = useState<PetData | null>(null);
 
   useEffect(() => {
     // Get all pet data
     getAllPetData();
     addStorageListener(setAllPets, "pets");
+    // get first petdata key
   }, []);
+
+  useEffect(() => {
+    setSelectedPet(allPets[selectedPetId]);
+  }, [selectedPetId]);
 
   const getAllPetData = async () => {
     try {
@@ -18,6 +26,9 @@ export default () => {
       if (pets) {
         console.log(pets);
         setAllPets(pets);
+
+        const firstKey = Object.keys(pets)[0];
+        setSelectedPetId(firstKey);
       }
     } catch (e) {
       console.error(e);
@@ -34,11 +45,16 @@ export default () => {
 
   return (
     <div className="container">
-      <div className="accordion accordion-flush" id="allPetsAccordion">
-        {Object.values(allPets).map((pet: PetData, i) => (
-          <SinglePet pet={pet} key={i} />
-        ))}
-      </div>
+      <PetOptions
+        allPets={allPets}
+        setSelectedPetId={setSelectedPetId}
+        selectedPetId={selectedPetId}
+      />
+      {selectedPet != null && (
+        <div>
+          <SinglePet pet={selectedPet} />
+        </div>
+      )}
     </div>
   );
 };

@@ -42,7 +42,12 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
 
           if (data["animalById"]) {
             console.log("%c[GraphQL XHR Response]", "color: green;", data);
-            dispatchData(data.animalById);
+            dispatchSinglePetData(data.animalById);
+          }
+
+          if (data["animalMany"]) {
+            console.log("%c[GraphQL XHR Response]", "color: green;", data);
+            dispatchMultiPetData(data.animalMany);
           }
         } catch (e) {
           console.warn("[GraphQL XHR Interception Error]", e);
@@ -58,10 +63,21 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
     "color: purple;"
   );
 
-  const dispatchData = function (data: any) {
+  const dispatchSinglePetData = function (data: any) {
     // // send to background service worker
     // data.created = new Date().toLocaleString();
 
-    document.dispatchEvent(new CustomEvent("DISPATCH_DATA", { detail: data }));
+    document.dispatchEvent(
+      new CustomEvent("DISPATCH_SINGLE_PET_DATA", { detail: data })
+    );
+  };
+
+  const dispatchMultiPetData = function (data: any) {
+    // // send to background service worker
+    // data.created = new Date().toLocaleString();
+
+    document.dispatchEvent(
+      new CustomEvent("DISPATCH_MULTI_PET_DATA", { detail: data })
+    );
   };
 })();
