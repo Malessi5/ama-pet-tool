@@ -17,6 +17,9 @@ module.exports = {
       import: "./src/bootstrap/bootstrap.bundle.min.js",
       filename: "./bootstrap/bootstrap.bundle.min.js",
     },
+    logo16: "./src/img/logo16.png",
+    logo32: "./src/img/logo32.png",
+    logo48: "./src/img/logo48.png",
   },
   module: {
     rules: [
@@ -24,6 +27,13 @@ module.exports = {
         test: /\.(ts|tsx)$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(png)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "img/[name][ext]",
+        },
       },
     ],
   },

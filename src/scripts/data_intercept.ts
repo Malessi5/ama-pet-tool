@@ -31,10 +31,6 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
 
       this.addEventListener("load", () => {
         try {
-          // const rawBody = requestBodyMap.get(this);
-          // const parsedBody = rawBody ? JSON.parse(rawBody) : null;
-          // console.log("%c[GraphQL XHR Request]", "color: orange;", parsedBody);
-
           const jsonResponse = JSON.parse(this.responseText);
           const { data } = jsonResponse;
           const url = window.location.href;
@@ -64,18 +60,14 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
   );
 
   const dispatchSinglePetData = function (data: any) {
-    // // send to background service worker
-    // data.created = new Date().toLocaleString();
-
+    // send to background service worker
     document.dispatchEvent(
       new CustomEvent("DISPATCH_SINGLE_PET_DATA", { detail: data })
     );
   };
 
   const dispatchMultiPetData = function (data: any) {
-    // // send to background service worker
-    // data.created = new Date().toLocaleString();
-
+    // send to background service worker
     document.dispatchEvent(
       new CustomEvent("DISPATCH_MULTI_PET_DATA", { detail: data })
     );

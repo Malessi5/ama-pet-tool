@@ -13,7 +13,6 @@ export default () => {
     // Get all pet data
     getAllPetData();
     addStorageListener(setAllPets, "pets");
-    // get first petdata key
   }, []);
 
   useEffect(() => {

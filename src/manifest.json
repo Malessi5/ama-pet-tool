@@ -7,6 +7,7 @@
     "service_worker": "background.js"
   },
   "permissions": ["storage", "activeTab", "sidePanel", "scripting"],
+  "host_permissions": ["https://amaanimalrescue.org/*"],
   "action": {
     "default_popup": "/index.html",
     "default_icon": {}
@@ -14,7 +15,11 @@
   "side_panel": {
     "default_path": "./index.html"
   },
-  "icons": {},
+  "icons": {
+    "16": "/img/logo16.png",
+    "32": "/img/logo32.png",
+    "48": "/img/logo48.png"
+  },
   "content_scripts": [
     {
       "matches": ["https://app.sparkie.io/app/*"],

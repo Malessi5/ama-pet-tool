@@ -3,7 +3,7 @@ chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error) => console.error(error));
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.type) {
     case "SW_STORE_PET_DATA":
       PetStorage.addSinglePet(message.petData);
@@ -11,10 +11,27 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     case "SW_STORE_PETS_DATA":
       PetStorage.addMultiplePets(message.petData);
       break;
+    case "CHECK_AMA_LINK":
+      checkAMALink(message.url, sendResponse);
+      break;
     default:
       break;
   }
+  return true;
 });
+
+const checkAMALink = async (url: string, sendResponse: Function) => {
+  try {
+    const check = await fetch(url, {
+      method: "HEAD",
+    });
+    sendResponse(check.ok);
+  } catch (error) {
+    sendResponse(false);
+  }
+  // the link to an animals AMA page should follow the same format each time,
+  // but we'll check if it's a valid link first before adding it
+};
 
 const PetStorage = {
   addSinglePet: async function (petData: PetData) {
