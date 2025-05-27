@@ -10,9 +10,14 @@ module.exports = {
     main: { import: "./src/index.tsx", filename: "index.js" },
     background: { import: "./src/background.ts", filename: "background.js" },
     content: { import: "./src/content.ts", filename: "content.js" },
-    scripts: {
+    contentwp: { import: "./src/content_wp.ts", filename: "content_wp.js" },
+    data_script: {
       import: "./src/scripts/data_intercept.ts",
       filename: "scripts/data_intercept.js",
+    },
+    wp_script: {
+      import: "./src/scripts/wordpress_fill.ts",
+      filename: "scripts/wordpress_fill.js",
     },
     bootstrap: {
       import: "./src/bootstrap/bootstrap.bundle.min.js",

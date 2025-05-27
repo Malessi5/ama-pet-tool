@@ -16,7 +16,7 @@ export default (props: {
           new Date(allPets[a].intakeDate).getTime()
       )
       .map((petId) => allPets[petId]);
-    console.log("sorted", sortedArray);
+
     setPetSelectArray(sortedArray);
 
     if (sortedArray.length && selectedPetId == "default") {

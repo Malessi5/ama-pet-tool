@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BasicInfo from "./BasicInfo";
+import content_utils from "../../../util/content_utils";
 
 const visibleAttributes = new Set([
   "animalId",
@@ -59,6 +60,11 @@ export default (props: { pet: PetData }) => {
 
   const openNewPetPage = () => {
     window.open(`${process.env.RESCUE_NEW_POST_LINK}&post_title=${pet.name}`);
+
+    setTimeout(() => {
+      content_utils.sendToContent({ type: "AUTOFILL_PET_DETAILS", data: pet });
+    }, 1000);
+    // chrome.runtime.sendMessage({ type: "AUTOFILL_PET_DETAILS", data: pet });
   };
 
   const checkRescueLink = async () => {

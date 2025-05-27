@@ -27,6 +27,9 @@ export default () => {
       if (pets) {
         console.log(pets);
         setAllPets(pets);
+      } else {
+        // if no stored pet data, open the animals page to get some
+        window.open(process.env.SPARKIE_LINK_PREFIX);
       }
     } catch (e) {
       console.error(e);
@@ -58,11 +61,11 @@ export default () => {
           )}
         </>
       ) : (
-        <div>
-          <p>No pet data found</p>
+        <div className="d-flex justify-content-center flex-column">
           <p>
-            Visit <a href="https://app.sparkie.io/app/animals">Sparkie</a> to
-            start populating pet data.
+            No pet data found. Opening{" "}
+            <a href="https://app.sparkie.io/app/animals">Sparkie</a> to collect
+            pet data...
           </p>
         </div>
       )}

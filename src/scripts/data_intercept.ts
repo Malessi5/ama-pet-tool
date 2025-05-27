@@ -54,10 +54,10 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
     return originalSend.apply(this, arguments as any);
   };
 
-  console.log(
-    "%c[XMLHttpRequest Interceptor for GraphQL Active]",
-    "color: purple;"
-  );
+  // console.log(
+  //   "%c[XMLHttpRequest Interceptor for GraphQL Active]",
+  //   "color: purple;"
+  // );
 
   const dispatchSinglePetData = function (data: any) {
     // send to background service worker

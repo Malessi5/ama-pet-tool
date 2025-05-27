@@ -25,6 +25,11 @@
       "matches": ["https://app.sparkie.io/app/*"],
       "js": ["content.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://amaanimalrescue.org/wp-admin/post-new.php*"],
+      "js": ["content_wp.js"],
+      "run_at": "document_start"
     }
   ],
   "content_security_policy": {
@@ -32,7 +37,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["scripts/data_intercept.js"],
+      "resources": ["scripts/data_intercept.js", "scripts/wordpress_fill.js"],
       "matches": ["https://*/*"]
     }
   ]
