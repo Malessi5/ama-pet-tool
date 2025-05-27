@@ -3,6 +3,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackExtensionManifestPlugin = require("webpack-extension-manifest-plugin");
 const baseManifest = require("./src/manifest.json");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   entry: {
@@ -21,6 +22,7 @@ module.exports = {
     logo32: "./src/img/logo32.png",
     logo48: "./src/img/logo48.png",
     default: "./src/img/default.png",
+    fullLogo: "./src/img/ama-logo-long-2018.png",
   },
   module: {
     rules: [
@@ -58,5 +60,6 @@ module.exports = {
         base: baseManifest,
       },
     }),
+    new Dotenv(),
   ],
 };

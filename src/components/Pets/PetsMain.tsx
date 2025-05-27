@@ -44,14 +44,26 @@ export default () => {
 
   return (
     <div className="container">
-      <PetOptions
-        allPets={allPets}
-        setSelectedPetId={setSelectedPetId}
-        selectedPetId={selectedPetId}
-      />
-      {selectedPet != null && (
+      {Object.keys(allPets).length > 0 ? (
+        <>
+          <PetOptions
+            allPets={allPets}
+            setSelectedPetId={setSelectedPetId}
+            selectedPetId={selectedPetId}
+          />
+          {selectedPet != null && (
+            <div>
+              <SinglePet pet={selectedPet} />
+            </div>
+          )}
+        </>
+      ) : (
         <div>
-          <SinglePet pet={selectedPet} />
+          <p>No pet data found</p>
+          <p>
+            Visit <a href="https://app.sparkie.io/app/animals">Sparkie</a> to
+            start populating pet data.
+          </p>
         </div>
       )}
     </div>

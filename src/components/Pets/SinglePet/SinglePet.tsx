@@ -19,12 +19,10 @@ export default (props: { pet: PetData }) => {
   // const [petData, setPetData] = useState({});
   const [amaLinkValid, setAmaLinkValid] = useState(false);
   const { pet } = props;
-  const imgUrlPrefix = "https://sparkie-app-public.s3.amazonaws.com/";
-  const sparkieLinkPrefix = "https://app.sparkie.io/app/animals/";
 
   const getImageUrl = () => {
     if (pet.photos && pet.photos.length > 0) {
-      return imgUrlPrefix + pet.photos[0].mediumThumbnailUrl;
+      return process.env.SPARKIE_IMG_PREFIX + pet.photos[0].mediumThumbnailUrl;
     }
     return "./img/default.png";
   };
@@ -52,11 +50,15 @@ export default (props: { pet: PetData }) => {
   };
 
   const openInSparkie = () => {
-    window.open(sparkieLinkPrefix + pet["_id"]);
+    window.open(process.env.SPARKIE_LINK_PREFIX + pet["_id"]);
   };
 
   const openRescuePage = () => {
-    window.open(`https://www.amaanimalrescue.org/pet/${pet.name}/`);
+    window.open(`${process.env.RESCUE_POST_URL_PREFIX}${pet.name}/`);
+  };
+
+  const openNewPetPage = () => {
+    window.open(process.env.RESCUE_NEW_POST_LINK);
   };
 
   const checkRescueLink = async () => {
@@ -67,7 +69,7 @@ export default (props: { pet: PetData }) => {
     await chrome.runtime.sendMessage(
       {
         type: "CHECK_RESCUE_LINK",
-        url: `https://amaanimalrescue.org/pet/${pet.name}/`,
+        url: `${process.env.RESCUE_POST_URL_PREFIX}${pet.name}/`,
         petId: pet.animalId,
       },
       (response) => {
@@ -111,13 +113,21 @@ export default (props: { pet: PetData }) => {
             >
               View in Sparkie
             </button>
-            {amaLinkValid && (
+            {amaLinkValid ? (
               <button
                 style={{ fontSize: ".8em" }}
                 className="btn btn-link"
                 onClick={openRescuePage}
               >
                 AMA Page
+              </button>
+            ) : (
+              <button
+                style={{ fontSize: ".8em" }}
+                className="btn btn-link"
+                onClick={openNewPetPage}
+              >
+                Add to Website
               </button>
             )}
           </div>
