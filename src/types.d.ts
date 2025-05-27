@@ -29,8 +29,12 @@ interface PetData {
   labels: string;
   lastUpdated: string;
   medicalStatus: string;
-  microchipCompany: string;
-  microchipNumber: string;
+  microchip: {
+    company: string;
+    number: string;
+  };
+  microchipCompany?: string;
+  microchipNumber?: string;
   name: string;
   photos: [
     {

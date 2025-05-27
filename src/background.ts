@@ -49,6 +49,15 @@ const PetStorage = {
       if (petData.intake.date) {
         petData.intakeDate = new Date(petData.intake.date).toLocaleDateString();
       }
+
+      if (petData.microchip.company) {
+        petData.microchipCompany = petData.microchip.company;
+      }
+
+      if (petData.microchip.number) {
+        petData.microchipNumber = petData.microchip.number;
+      }
+
       allPets[petData.animalId] = petData;
       await chrome.storage.local.set({ pets: allPets });
     } catch (error) {

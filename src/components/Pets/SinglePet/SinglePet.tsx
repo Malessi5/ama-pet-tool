@@ -58,7 +58,7 @@ export default (props: { pet: PetData }) => {
   };
 
   const openNewPetPage = () => {
-    window.open(process.env.RESCUE_NEW_POST_LINK);
+    window.open(`${process.env.RESCUE_NEW_POST_LINK}&post_title=${pet.name}`);
   };
 
   const checkRescueLink = async () => {

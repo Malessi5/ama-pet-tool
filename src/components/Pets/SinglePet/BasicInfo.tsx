@@ -22,6 +22,8 @@ export default (props: { pet: PetData }) => {
     color2: { label: "Secondary Color" },
     size: { label: "Size" },
     dateOfBirth: { label: "Date of Birth" },
+    microchipCompany: { label: "Microchip Company" },
+    microchipNumber: { label: "Microchip Number" },
   };
 
   const getPetAge = (dobStr: string) => {
@@ -74,7 +76,7 @@ export default (props: { pet: PetData }) => {
         }
       } else if (attr == "dateOfBirth" && pet.dateOfBirth) {
         let dateStr = new Date(pet.dateOfBirth).toLocaleDateString();
-        value = dateStr + " " + getPetAge(dateStr);
+        value = dateStr + " (" + getPetAge(dateStr) + ")";
       } else if (pet[attr as keyof typeof pet]) {
         value = pet[attr as keyof typeof pet];
       }
