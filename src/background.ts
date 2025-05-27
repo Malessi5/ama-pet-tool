@@ -11,8 +11,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case "SW_STORE_PETS_DATA":
       PetStorage.addMultiplePets(message.petData);
       break;
-    case "CHECK_AMA_LINK":
-      checkAMALink(message.url, sendResponse);
+    case "CHECK_RESCUE_LINK":
+      checkRescueLink(message.url, message.petId, sendResponse);
       break;
     default:
       break;
@@ -20,11 +20,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
-const checkAMALink = async (url: string, sendResponse: Function) => {
+const checkRescueLink = async (
+  url: string,
+  petId: string,
+  sendResponse: Function
+) => {
   try {
     const check = await fetch(url, {
       method: "HEAD",
     });
+    if (check.ok) {
+      PetStorage.updateRescueURL(petId, url);
+    }
     sendResponse(check.ok);
   } catch (error) {
     sendResponse(false);
@@ -43,6 +50,20 @@ const PetStorage = {
         petData.intakeDate = new Date(petData.intake.date).toLocaleDateString();
       }
       allPets[petData.animalId] = petData;
+      await chrome.storage.local.set({ pets: allPets });
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  updateRescueURL: async function (petId: string, url: string) {
+    try {
+      const allPets = await this.getAllPets();
+
+      if (allPets.petId) {
+        allPets.petId.rescueLink = url;
+        allPets.petId.rescueLinkExpirationDate = new Date();
+      }
+
       await chrome.storage.local.set({ pets: allPets });
     } catch (error) {
       console.error(error);

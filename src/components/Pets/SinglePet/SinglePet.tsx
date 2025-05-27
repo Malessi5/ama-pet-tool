@@ -26,46 +26,49 @@ export default (props: { pet: PetData }) => {
     if (pet.photos && pet.photos.length > 0) {
       return imgUrlPrefix + pet.photos[0].mediumThumbnailUrl;
     }
+    return "./img/default.png";
   };
 
   useEffect(() => {
-    checkAMALink();
+    // check rescue link validity and expiration date
+    if (
+      pet.rescueLink &&
+      validDate(new Date(pet.rescueLinkExpirationDate), new Date())
+    ) {
+      setAmaLinkValid(true);
+    } else {
+      setAmaLinkValid(false);
+      checkRescueLink();
+    }
   }, [pet]);
-  // useEffect(() => {
-  //   setPetData(formatPetData(pet));
-  // }, [pet]);
 
-  // const formatPetData = (pet: PetData) => {
-  //   const updatedData: any = {};
-  //   for (let attr in pet) {
-  //     if (visibleAttributes.has(attr)) {
-  //       if (attr == "intake" && pet["intake"]["date"]) {
-  //         updatedData["intakeDate"] = pet["intake"]["date"];
-  //       } else {
-  //         updatedData[attr] = pet[attr as keyof typeof pet];
-  //       }
-  //     }
-  //   }
-  //   return updatedData;
-  // };
+  const validDate = (expDate: Date, currentDate: Date) => {
+    // check if exp date is within 7 days
+    let dateDiff = Math.floor(
+      (expDate.getTime() - currentDate.getTime()) / (24 * 3600 * 1000)
+    );
+
+    return dateDiff <= 7;
+  };
 
   const openInSparkie = () => {
     window.open(sparkieLinkPrefix + pet["_id"]);
   };
 
-  const openAMAPage = () => {
+  const openRescuePage = () => {
     window.open(`https://www.amaanimalrescue.org/pet/${pet.name}/`);
   };
 
-  const checkAMALink = async () => {
+  const checkRescueLink = async () => {
     // the link to an animals AMA page should follow the same format each time,
     // but we'll check if it's a valid link first before adding it
 
     //TODO: save link and expiration date to pet data
     await chrome.runtime.sendMessage(
       {
-        type: "CHECK_AMA_LINK",
+        type: "CHECK_RESCUE_LINK",
         url: `https://amaanimalrescue.org/pet/${pet.name}/`,
+        petId: pet.animalId,
       },
       (response) => {
         setAmaLinkValid(response);
@@ -82,15 +85,25 @@ export default (props: { pet: PetData }) => {
           className="d-flex align-items-center flex-column mb-3"
           id="pet-header"
         >
-          <img className="rounded" src={getImageUrl()} />
-          {pet.adoptedName ? (
-            <h3 className="mb-0">
-              {pet.name} nka {pet.adoptedName}
-            </h3>
-          ) : (
-            <h3 className="mb-0">{pet.name}</h3>
-          )}
-          <div className="flex">
+          <div style={{ height: 200 }}>
+            <img
+              className="rounded"
+              src={getImageUrl()}
+              style={{ width: 200 }}
+            />
+          </div>
+          <div className="d-flex">
+            <div id="pet-name">
+              {pet.adoptedName ? (
+                <h3 className="mb-0">
+                  {pet.name} nka {pet.adoptedName}
+                </h3>
+              ) : (
+                <h3 className="mb-0">{pet.name}</h3>
+              )}
+            </div>
+          </div>
+          <div className="flex" id="links">
             <button
               style={{ fontSize: ".8em" }}
               className="btn btn-link"
@@ -102,7 +115,7 @@ export default (props: { pet: PetData }) => {
               <button
                 style={{ fontSize: ".8em" }}
                 className="btn btn-link"
-                onClick={openAMAPage}
+                onClick={openRescuePage}
               >
                 AMA Page
               </button>

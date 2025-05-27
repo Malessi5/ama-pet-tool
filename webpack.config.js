@@ -20,6 +20,7 @@ module.exports = {
     logo16: "./src/img/logo16.png",
     logo32: "./src/img/logo32.png",
     logo48: "./src/img/logo48.png",
+    default: "./src/img/default.png",
   },
   module: {
     rules: [

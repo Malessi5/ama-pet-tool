@@ -1,19 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-const basicInfo = new Set([
-  "animalId",
-  "breed",
-  "breed2",
-  "characteristics",
-  "coat",
-  "color",
-  "color2",
-  "dateOfBirth",
-  "gender",
-  "species",
-  "size",
-]);
-
 export default (props: { pet: PetData }) => {
   const { pet } = props;
 

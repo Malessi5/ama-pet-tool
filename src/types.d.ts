@@ -42,6 +42,8 @@ interface PetData {
       url: string;
     }
   ];
+  rescueLink?: string;
+  rescueLinkExpirationDate?: date;
   size: string;
   sparkieURL: string;
   species: string;

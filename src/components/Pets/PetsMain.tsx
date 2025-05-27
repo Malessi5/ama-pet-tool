@@ -6,7 +6,7 @@ type PetMap = Record<string, PetData>;
 
 export default () => {
   const [allPets, setAllPets] = useState<PetMap>({});
-  const [selectedPetId, setSelectedPetId] = useState<string>("");
+  const [selectedPetId, setSelectedPetId] = useState<string>("default");
   const [selectedPet, setSelectedPet] = useState<PetData | null>(null);
 
   useEffect(() => {
@@ -16,7 +16,9 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    setSelectedPet(allPets[selectedPetId]);
+    if (selectedPetId !== "default") {
+      setSelectedPet(allPets[selectedPetId]);
+    }
   }, [selectedPetId, allPets]);
 
   const getAllPetData = async () => {
@@ -25,9 +27,6 @@ export default () => {
       if (pets) {
         console.log(pets);
         setAllPets(pets);
-
-        const firstKey = Object.keys(pets)[0];
-        setSelectedPetId(firstKey);
       }
     } catch (e) {
       console.error(e);
