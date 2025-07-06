@@ -2,7 +2,7 @@ import React from "react";
 import Pets from "./Pets/PetsMain";
 import Header from "./Header";
 
-export default () => {
+export default (): React.ReactElement => {
   return (
     <div className="container">
       <Header />

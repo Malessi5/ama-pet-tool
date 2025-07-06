@@ -13,11 +13,11 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
   const isGraphQL = new WeakMap<XMLHttpRequest, boolean>();
 
   XMLHttpRequest.prototype.open = function (
-    method: string,
+    _method: string,
     url: string,
-    async?: boolean,
-    user?: string | null,
-    password?: string | null
+    _async?: boolean,
+    _user?: string | null,
+    _password?: string | null
   ) {
     isGraphQL.set(this, graphqlURLMatch(url));
     return originalOpen.apply(this, arguments as any);
@@ -59,14 +59,14 @@ const requestBodyMap = new WeakMap<XMLHttpRequest, string>();
   //   "color: purple;"
   // );
 
-  const dispatchSinglePetData = function (data: any) {
+  const dispatchSinglePetData = function (data: PetData) {
     // send to background service worker
     document.dispatchEvent(
       new CustomEvent("DISPATCH_SINGLE_PET_DATA", { detail: data })
     );
   };
 
-  const dispatchMultiPetData = function (data: any) {
+  const dispatchMultiPetData = function (data: PetData[]) {
     // send to background service worker
     document.dispatchEvent(
       new CustomEvent("DISPATCH_MULTI_PET_DATA", { detail: data })

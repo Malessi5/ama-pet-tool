@@ -9,28 +9,28 @@ const ContentScript = {
 
       // custom event listener to listen for data from inject script
       document.addEventListener("DISPATCH_SINGLE_PET_DATA", (e) => {
-        const customEvent = e as CustomEvent<any>;
+        const customEvent = e as CustomEvent<PetData>;
         console.log(customEvent.detail);
         ContentScript.sparkie.utils.savePetData(customEvent.detail, true);
       });
 
       document.addEventListener("DISPATCH_MULTI_PET_DATA", (e) => {
-        const customEvent = e as CustomEvent<any>;
+        const customEvent = e as CustomEvent<PetData[]>;
         console.log(customEvent.detail);
         ContentScript.sparkie.utils.savePetData(customEvent.detail, false);
       });
     },
     utils: {
-      savePetData: async function (petData: PetData, singlePet: Boolean) {
+      savePetData: async function (petData: PetData | PetData[], singlePet: boolean) {
         if (singlePet) {
           await chrome.runtime.sendMessage({
             type: "SW_STORE_PET_DATA",
-            petData,
+            petData: petData as PetData,
           });
         } else {
           await chrome.runtime.sendMessage({
             type: "SW_STORE_PETS_DATA",
-            petData,
+            petData: petData as PetData[],
           });
         }
       },

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Attribute from "./Attribute";
 
-export default (props: { pet: PetData }) => {
+export default (props: { pet: PetData }): React.ReactElement => {
   const { pet } = props;
-  const [basicInfoData, setBasicInfoData] = useState([]);
+  const [basicInfoData, setBasicInfoData] = useState<PetAttribute[]>([]);
 
   useEffect(() => {
     formatInfoData();
@@ -26,7 +26,7 @@ export default (props: { pet: PetData }) => {
     microchipNumber: { label: "Microchip Number" },
   };
 
-  const getPetAge = (dobStr: string) => {
+  const getPetAge = (dobStr: string): string => {
     const dob = new Date(dobStr);
     const now = new Date();
 
@@ -53,33 +53,28 @@ export default (props: { pet: PetData }) => {
     }
   };
 
-  const formatInfoData = () => {
-    const data: any = [];
+  const formatInfoData = (): void => {
+    const data: PetAttribute[] = [];
 
     for (let attr in basicInfoAttributes) {
-      let value;
+      let value: string | number | boolean | undefined;
       const label =
         basicInfoAttributes[attr as keyof typeof basicInfoAttributes].label;
 
-      if (attr.includes(".")) {
-        const attrArr = attr.split(".");
-        let ref = pet[attrArr[0] as keyof typeof pet];
-
-        for (let i = 1; i < attrArr.length; i++) {
-          if (!ref) break;
-          ref = ref[attrArr[i]];
-        }
-        if (ref) {
-          value = ref;
-        } else {
-          continue;
-        }
-      } else if (attr == "dateOfBirth" && pet.dateOfBirth) {
+      if (attr === "currentGuardian.status") {
+        value = pet.currentGuardian?.status;
+      } else if (attr === "intake.mode") {
+        value = pet.intake?.mode;
+      } else if (attr === "dateOfBirth" && pet.dateOfBirth) {
         let dateStr = new Date(pet.dateOfBirth).toLocaleDateString();
         value = dateStr + " (" + getPetAge(dateStr) + ")";
-      } else if (pet[attr as keyof typeof pet]) {
-        value = pet[attr as keyof typeof pet];
+      } else {
+        const petValue = pet[attr as keyof PetData];
+        if (petValue) {
+          value = String(petValue);
+        }
       }
+      
       if (value) {
         data.push({ label, value });
       }
@@ -92,7 +87,7 @@ export default (props: { pet: PetData }) => {
     <div className="container">
       <ul className="list-group">
         {basicInfoData.map(({ label, value }) => (
-          <Attribute label={label} value={value} />
+          <Attribute key={label} label={label} value={value} />
         ))}
       </ul>
     </div>

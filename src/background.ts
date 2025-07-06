@@ -3,7 +3,7 @@ chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error) => console.error(error));
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   switch (message.type) {
     case "SW_STORE_PET_DATA":
       PetStorage.addSinglePet(message.petData);
@@ -68,9 +68,9 @@ const PetStorage = {
     try {
       const allPets = await this.getAllPets();
 
-      if (allPets.petId) {
-        allPets.petId.rescueLink = url;
-        allPets.petId.rescueLinkExpirationDate = new Date();
+      if (allPets[petId]) {
+        allPets[petId].rescueLink = url;
+        allPets[petId].rescueLinkExpirationDate = new Date();
       }
 
       await chrome.storage.local.set({ pets: allPets });

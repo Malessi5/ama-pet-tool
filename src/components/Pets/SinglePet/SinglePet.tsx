@@ -2,27 +2,27 @@ import React, { useState, useEffect } from "react";
 import BasicInfo from "./BasicInfo";
 import content_utils from "../../../util/content_utils";
 
-const visibleAttributes = new Set([
-  "animalId",
-  "breed",
-  "breed2",
-  "characteristics",
-  "coat",
-  "color",
-  "color2",
-  "dateOfBirth",
-  "intake",
-  "gender",
-  "size",
-]);
+// const visibleAttributes = new Set([
+//   "animalId",
+//   "breed",
+//   "breed2",
+//   "characteristics",
+//   "coat",
+//   "color",
+//   "color2",
+//   "dateOfBirth",
+//   "intake",
+//   "gender",
+//   "size",
+// ]);
 
-export default (props: { pet: PetData }) => {
+export default (props: { pet: PetData }): React.ReactElement => {
   // const [petData, setPetData] = useState({});
   const [amaLinkValid, setAmaLinkValid] = useState(false);
   const { pet } = props;
 
-  const getImageUrl = () => {
-    if (pet.photos && pet.photos.length > 0) {
+  const getImageUrl = (): string => {
+    if (pet.photos && pet.photos.length > 0 && pet.photos[0]) {
       return process.env.SPARKIE_IMG_PREFIX + pet.photos[0].mediumThumbnailUrl;
     }
     return "./img/default.png";
@@ -32,6 +32,7 @@ export default (props: { pet: PetData }) => {
     // check rescue link validity and expiration date
     if (
       pet.rescueLink &&
+      pet.rescueLinkExpirationDate &&
       validDate(new Date(pet.rescueLinkExpirationDate), new Date())
     ) {
       setAmaLinkValid(true);
@@ -41,7 +42,7 @@ export default (props: { pet: PetData }) => {
     }
   }, [pet]);
 
-  const validDate = (expDate: Date, currentDate: Date) => {
+  const validDate = (expDate: Date, currentDate: Date): boolean => {
     // check if exp date is within 7 days
     let dateDiff = Math.floor(
       (expDate.getTime() - currentDate.getTime()) / (24 * 3600 * 1000)
@@ -50,15 +51,17 @@ export default (props: { pet: PetData }) => {
     return dateDiff <= 7;
   };
 
-  const openInSparkie = () => {
-    window.open(process.env.SPARKIE_LINK_PREFIX + pet["_id"]);
+  const openInSparkie = (): void => {
+    if (pet._id) {
+      window.open(process.env.SPARKIE_LINK_PREFIX + pet._id);
+    }
   };
 
-  const openRescuePage = () => {
+  const openRescuePage = (): void => {
     window.open(`${process.env.RESCUE_POST_URL_PREFIX}${pet.name}/`);
   };
 
-  const openNewPetPage = () => {
+  const openNewPetPage = (): void => {
     window.open(`${process.env.RESCUE_NEW_POST_LINK}&post_title=${pet.name}`);
 
     setTimeout(() => {
@@ -67,7 +70,7 @@ export default (props: { pet: PetData }) => {
     // chrome.runtime.sendMessage({ type: "AUTOFILL_PET_DETAILS", data: pet });
   };
 
-  const checkRescueLink = async () => {
+  const checkRescueLink = async (): Promise<void> => {
     // the link to an animals AMA page should follow the same format each time,
     // but we'll check if it's a valid link first before adding it
 

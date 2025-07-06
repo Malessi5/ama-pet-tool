@@ -3,8 +3,8 @@ import React, { ChangeEvent, useState, useEffect } from "react";
 export default (props: {
   allPets: AllPetData;
   selectedPetId: string;
-  setSelectedPetId: Function;
-}) => {
+  setSelectedPetId: (petId: string) => void;
+}): React.ReactElement => {
   const { allPets, setSelectedPetId, selectedPetId } = props;
   const [petSelectArray, setPetSelectArray] = useState<PetData[]>([]);
 
@@ -12,25 +12,26 @@ export default (props: {
     const sortedArray = Object.keys(allPets)
       .sort(
         (a, b) =>
-          new Date(allPets[b].intakeDate).getTime() -
-          new Date(allPets[a].intakeDate).getTime()
+          new Date(allPets[b]?.intakeDate || 0).getTime() -
+          new Date(allPets[a]?.intakeDate || 0).getTime()
       )
-      .map((petId) => allPets[petId]);
+      .map((petId) => allPets[petId])
+      .filter((pet): pet is PetData => pet !== undefined);
 
     setPetSelectArray(sortedArray);
 
-    if (sortedArray.length && selectedPetId == "default") {
-      setSelectedPetId(sortedArray[0].animalId);
+    if (sortedArray.length && selectedPetId === "default") {
+      setSelectedPetId(sortedArray[0]?.animalId || "");
     }
   }, [allPets]);
 
-  const changeHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+  const changeHandler = (e: ChangeEvent<HTMLSelectElement>): void => {
     if (e.target && e.target.id === "pet-selector") {
       setSelectedPetId(e.target.value);
     }
   };
 
-  const btnHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const btnHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     const petIdArr = petSelectArray.map((pet) => pet.animalId);
     const target = e.target as HTMLButtonElement;
@@ -43,7 +44,10 @@ export default (props: {
     ) {
       if (idx > 0) {
         console.log(idx);
-        setSelectedPetId(petIdArr[idx - 1]);
+        const prevPetId = petIdArr[idx - 1];
+        if (prevPetId) {
+          setSelectedPetId(prevPetId);
+        }
       }
     } else if (
       target?.id == "next-btn" ||
@@ -51,7 +55,10 @@ export default (props: {
       target?.parentElement?.parentElement?.id == "next-btn"
     ) {
       if (idx < petIdArr.length - 1) {
-        setSelectedPetId(petIdArr[idx + 1]);
+        const nextPetId = petIdArr[idx + 1];
+        if (nextPetId) {
+          setSelectedPetId(nextPetId);
+        }
       }
     }
   };
@@ -85,11 +92,11 @@ export default (props: {
           </option>
           {petSelectArray.map((pet) =>
             pet.adoptedName && pet.adoptedName != pet.name ? (
-              <option value={pet.animalId}>
+              <option key={pet.animalId} value={pet.animalId}>
                 {pet.name} nka {pet.adoptedName}
               </option>
             ) : (
-              <option value={pet.animalId}>{pet.name}</option>
+              <option key={pet.animalId} value={pet.animalId}>{pet.name}</option>
             )
           )}
         </select>

@@ -4,7 +4,7 @@ import PetOptions from "./PetOptions";
 
 type PetMap = Record<string, PetData>;
 
-export default () => {
+export default (): React.ReactElement => {
   const [allPets, setAllPets] = useState<PetMap>({});
   const [selectedPetId, setSelectedPetId] = useState<string>("default");
   const [selectedPet, setSelectedPet] = useState<PetData | null>(null);
@@ -17,11 +17,11 @@ export default () => {
 
   useEffect(() => {
     if (selectedPetId !== "default") {
-      setSelectedPet(allPets[selectedPetId]);
+      setSelectedPet(allPets[selectedPetId] || null);
     }
   }, [selectedPetId, allPets]);
 
-  const getAllPetData = async () => {
+  const getAllPetData = async (): Promise<void> => {
     try {
       const { pets } = await chrome.storage.local.get("pets");
       if (pets) {
@@ -29,18 +29,20 @@ export default () => {
         setAllPets(pets);
       } else {
         // if no stored pet data, open the animals page to get some
-        window.open(process.env.SPARKIE_LINK_PREFIX);
+        if (process.env.SPARKIE_LINK_PREFIX) {
+          window.open(process.env.SPARKIE_LINK_PREFIX);
+        }
       }
     } catch (e) {
       console.error(e);
     }
   };
 
-  const addStorageListener = async (callback: Function, key: string) => {
+  const addStorageListener = async (callback: (value: any) => void, key: string): Promise<void> => {
     await chrome.storage.onChanged.addListener((changes) => {
       if (changes.hasOwnProperty(key)) {
-        console.log("storage change", changes[key].newValue);
-        callback(changes[key].newValue);
+        console.log("storage change", changes[key]?.newValue);
+        callback(changes[key]?.newValue);
       }
     });
   };

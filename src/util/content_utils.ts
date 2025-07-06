@@ -9,14 +9,16 @@ export default {
     // };
     (document.head || document.documentElement).appendChild(s);
   },
-  sendToContent: async function (message: any) {
+  sendToContent: async function (message: ChromeMessage) {
     let activeTab = await chrome.tabs.query({
       active: true,
       currentWindow: true,
     });
 
-    let tabId = activeTab[0].id!;
-    await chrome.tabs.sendMessage(tabId, message);
+    if (activeTab[0]?.id) {
+      let tabId = activeTab[0].id;
+      await chrome.tabs.sendMessage(tabId, message);
+    }
     // console.log('send to content', message);
     return;
   },

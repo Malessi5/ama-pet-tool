@@ -1,6 +1,6 @@
 import React from "react";
 
-export default (props: { label: string; value: any }) => {
+export default (props: { label: string; value: string | number | boolean }): React.ReactElement => {
   const { label, value } = props;
 
   return (

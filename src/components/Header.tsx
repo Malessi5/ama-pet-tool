@@ -1,7 +1,7 @@
 import React from "react";
 
-export default () => {
-  const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+export default (): React.ReactElement => {
+  const clickHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
     const target = e.target as HTMLButtonElement;
     switch (target.id) {
       case "sparkie-animals":
